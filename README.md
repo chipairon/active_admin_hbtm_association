@@ -36,7 +36,7 @@ Create the method MetaSearch is looking for as a scope and make it 'findable' to
 
 ```ruby
 class Post < ActiveRecord::Base
-  attr_accessible :body, :title, :categories
+  attr_accessible :body, :title
   has_and_belongs_to_many :categories
 
   search_methods :category_ids_eq
