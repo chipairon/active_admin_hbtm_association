@@ -24,6 +24,13 @@ The following exception is thrown:
 undefined method `category_ids_eq' for #<MetaSearch::Searches::Post:0x007fcc483bf918>
 ```
 
+
+# Related discussions:
+https://github.com/gregbell/active_admin/issues/1093
+https://github.com/gregbell/active_admin/pull/1928
+https://github.com/gregbell/active_admin/issues/515
+
+
 # The solution:
 Create the method MetaSearch is looking for as a scope and make it 'findable' to MetaSearch declaring it as a 'search method':
 
