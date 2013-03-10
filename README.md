@@ -3,7 +3,8 @@ active_admin_hbtm_association
 
 How to have active_admin filters working with a has_and_belongs_to_many association.
 
-The issue:
+# The issue:
+
 Let's have two models: Post and Category related via a has_and_belongs_to_many association.
 Let's try to make a filter for the Post index admin page:
 
@@ -23,7 +24,7 @@ The following exception is thrown:
 undefined method `category_ids_eq' for #<MetaSearch::Searches::Post:0x007fcc483bf918>
 ```
 
-The solution:
+# The solution:
 Create the method MetaSearch is looking for as a scope and make it 'findable' to MetaSearch declaring it as a 'search method':
 
 ```ruby
@@ -40,7 +41,7 @@ end
 ```
 
 
-The set up:
+# The set up from scratch:
 ```bash
 rails new active_admin_hbtm_association -T
 ```
@@ -63,11 +64,36 @@ rails g model category name:string -T
 
 ```bash
 rails g migration CreateTableCategoriesPosts
+
+# and fill the migration file:
+class CreateTableCategoriesPosts < ActiveRecord::Migration
+  def change
+    create_table :categories_posts do |t|
+      t.references :post
+      t.references :category
+    end
+  end
+end
+
+# then run migrate
+rake db:migrate
 ```
 - Add associations to models:
 
+```ruby
+class Post < ActiveRecord::Base
+  attr_accessible :body, :title, :categories
+  has_and_belongs_to_many :categories
+end
+
+class Category < ActiveRecord::Base
+  attr_accessible :name
+  has_and_belongs_to_many :posts
+end
+```
+
 ```bash
-rake db:migrate
+# create admin views
 rails g active_admin:resource post
 rails g active_admin:resource category
 ```
